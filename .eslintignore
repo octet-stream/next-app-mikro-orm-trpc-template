@@ -1,0 +1,7 @@
+/node_modules
+/db
+
+*.js
+*.mjs
+*.cjs
+*.d.ts
