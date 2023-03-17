@@ -1,3 +1,5 @@
+"use client"
+
 import type {FC, ComponentPropsWithoutRef} from "react"
 import {Plus} from "lucide-react"
 

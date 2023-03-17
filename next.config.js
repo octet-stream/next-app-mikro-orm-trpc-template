@@ -3,7 +3,13 @@ const config = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    newNextLinkBehavior: true
+    appDir: true,
+    serverComponentsExternalPackages: [
+      "@mikro-orm/core",
+      "@mikro-orm/mysql",
+      "@mikro-orm/migrations",
+      "@mikro-orm/seeder"
+    ]
   }
 }
 

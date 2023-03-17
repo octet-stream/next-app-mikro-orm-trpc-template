@@ -1,3 +1,5 @@
+"use client"
+
 import type {INTERNAL_Snapshot as Snapshot} from "valtio"
 import {useMemo, useContext, createContext} from "react"
 import type {FC, ReactNode, Context} from "react"

@@ -1,3 +1,5 @@
+"use client"
+
 import type {FC} from "react"
 
 import {useNoteStateSnapshot} from "context/NoteStateContext"

@@ -1,3 +1,5 @@
+"use client"
+
 import {Pause} from "lucide-react"
 
 import {NoteStatus} from "server/trpc/type/common/NoteStatus"

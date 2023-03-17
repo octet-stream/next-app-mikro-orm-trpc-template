@@ -1,3 +1,5 @@
+"use client"
+
 import {RadioGroup} from "@headlessui/react"
 import type {FC} from "react"
 

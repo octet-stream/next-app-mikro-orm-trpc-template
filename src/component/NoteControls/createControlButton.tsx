@@ -1,3 +1,5 @@
+"use client"
+
 import {forwardRef, createElement, useCallback} from "react"
 import type {ComponentPropsWithoutRef} from "react"
 import type {LucideIcon} from "lucide-react"

@@ -1,3 +1,5 @@
+"use client"
+
 import {useUpdateEffect} from "react-use"
 import {Tab} from "@headlessui/react"
 import {useState} from "react"

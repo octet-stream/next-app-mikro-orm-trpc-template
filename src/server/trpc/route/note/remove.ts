@@ -13,7 +13,7 @@ export const remove = procedure
   .output(RemoveOutput)
   .mutation(async ({input, ctx}) => {
     const {id, soft} = input
-    const {orm, res} = ctx
+    const {orm} = ctx
 
     const note = await orm.em.findOneOrFail(Note, input.id, {
       filters: false,
@@ -28,10 +28,6 @@ export const remove = procedure
     }
 
     await orm.em.flush()
-    await Promise.allSettled([
-      res.revalidate("/"),
-      res.revalidate(`/view/${id}`, {unstable_onlyGenerated: true})
-    ])
 
     return {id, soft}
   })

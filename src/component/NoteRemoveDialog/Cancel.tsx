@@ -1,3 +1,5 @@
+"use client"
+
 /* eslint-disable react/prop-types */
 
 import type {CancelButton} from "component/ConfirmationDialog"

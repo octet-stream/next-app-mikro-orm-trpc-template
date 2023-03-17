@@ -1,3 +1,5 @@
+"use client"
+
 import type {FC, ReactNode} from "react"
 import {Tab} from "@headlessui/react"
 

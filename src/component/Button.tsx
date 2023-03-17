@@ -1,3 +1,5 @@
+"use client"
+
 /* eslint-disable react/button-has-type */
 import type {ComponentPropsWithoutRef} from "react"
 import {forwardRef} from "react"

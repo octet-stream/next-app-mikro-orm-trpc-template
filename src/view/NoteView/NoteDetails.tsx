@@ -1,3 +1,5 @@
+"use client"
+
 import {createElement, Fragment, useMemo} from "react"
 import {unified} from "unified"
 import type {FC} from "react"

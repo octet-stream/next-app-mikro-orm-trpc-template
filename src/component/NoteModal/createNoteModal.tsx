@@ -1,3 +1,5 @@
+"use client"
+
 import {useForm, SubmitHandler, FieldValues} from "react-hook-form"
 import type {AnyZodObject, infer as Infer} from "zod"
 import {zodResolver} from "@hookform/resolvers/zod"

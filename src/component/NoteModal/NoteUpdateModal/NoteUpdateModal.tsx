@@ -1,4 +1,7 @@
+"use client"
+
 /* eslint-disable react/no-unstable-nested-components */
+
 import type {SubmitHandler} from "react-hook-form"
 import {toast} from "react-hot-toast"
 import {useCallback} from "react"

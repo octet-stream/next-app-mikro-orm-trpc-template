@@ -1,3 +1,5 @@
+"use client"
+
 import {useEvent} from "react-use-event-hook"
 import {useRef, createElement} from "react"
 import type {FC, ReactNode} from "react"

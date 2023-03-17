@@ -4,6 +4,7 @@ import Link from "next/link"
 
 import {BaseLayout} from "layout/BaseLayout"
 
+// TODO: Remove this in favour of `/app/not-found.tsx` when next.js will support it for catching unmatched routes
 const NotFound: FC = () => (
   <BaseLayout>
     <div className="w-full h-full flex flex-col justify-center items-center text-center">

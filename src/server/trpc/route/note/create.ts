@@ -9,12 +9,11 @@ export const create = procedure
   .input(NoteCreateInput)
   .output(NoteOutput)
   .mutation(async ({input, ctx}) => {
-    const {orm, res} = ctx
+    const {orm} = ctx
 
     const note = orm.em.create(Note, input)
 
     await orm.em.persistAndFlush(note)
-    await res.revalidate("/")
 
     return note
   })

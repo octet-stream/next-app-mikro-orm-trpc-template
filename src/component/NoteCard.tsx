@@ -1,3 +1,5 @@
+"use client"
+
 import {Check, Lock} from "lucide-react"
 import {toast} from "react-hot-toast"
 import {useCallback} from "react"

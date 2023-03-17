@@ -1,3 +1,5 @@
+"use client"
+
 import {useEvent} from "react-use-event-hook"
 import {RotateCcw} from "lucide-react"
 import type {FC} from "react"

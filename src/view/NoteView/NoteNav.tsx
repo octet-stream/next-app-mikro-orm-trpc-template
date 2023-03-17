@@ -1,3 +1,5 @@
+"use client"
+
 import {ArrowLeft} from "lucide-react"
 import type {FC} from "react"
 

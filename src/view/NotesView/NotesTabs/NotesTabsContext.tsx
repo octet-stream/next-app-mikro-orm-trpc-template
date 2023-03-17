@@ -1,3 +1,5 @@
+"use client"
+
 import {createContext, useContext, useState, useMemo} from "react"
 import {useEvent} from "react-use-event-hook"
 import type {FC, ReactNode} from "react"

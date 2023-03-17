@@ -1,6 +1,8 @@
+"use client"
+
 import {useEvent} from "react-use-event-hook"
 import {useCallback, useState} from "react"
-import {useRouter} from "next/router"
+import {useRouter} from "next/navigation"
 import {toast} from "react-hot-toast"
 import type {FC} from "react"
 
@@ -34,9 +36,7 @@ export const NoteRemoveDialog: FC<Props> = () => {
 
       soft: action === "reject" && isRejected === false
     })
-      .then(async () => {
-        await router.replace("/", undefined, {unstable_skipClientCache: true})
-      })
+      .then(() => router.replace("/"))
       .catch(error => {
         console.error(error)
         toast.error("Can't delete this note.")

@@ -1,3 +1,5 @@
+"use client"
+
 import type {TNotesPageOutput} from "server/trpc/type/output/NotesPageOutput"
 
 import {createStateContext} from "lib/context/createStateContext"
