@@ -1,3 +1,4 @@
+import {notFound} from "next/navigation"
 import type {Metadata} from "next"
 
 import {Note} from "server/db/entity"
@@ -29,7 +30,8 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
   const orm = await getORM()
 
   const {title} = await orm.em.findOneOrFail(Note, params.id, {
-    disableIdentityMap: true
+    disableIdentityMap: true,
+    failHandler: notFound
   })
 
   return {
