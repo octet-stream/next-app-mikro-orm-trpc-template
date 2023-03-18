@@ -3,7 +3,7 @@
 # Start MySQL
 docker compose -f docker-compose.test.yml up --wait --remove-orphans
 
-name=next-mikro-orm-trpc-template-quick-demo
+name=next-app-mikro-orm-trpc-template-quick-demo
 
 function build() {
   if [[ "$OSTYPE" == "linux-gnu"* ]]; then
