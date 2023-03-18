@@ -1,17 +1,12 @@
-import {createPageDataLoader} from "lib/util/createPageDataLoader"
 import type {AFC} from "lib/type/AsyncFunctionComponent"
 
-import {router} from "server/trpc/router"
+import {createCaller} from "lib/trpc/server"
 
 import {NotesTabs, NotesView} from "view/NotesView"
 
 export const revalidate: number = 0
 
-const getNotes = createPageDataLoader(async () => {
-  const trpc = router.createCaller({})
-
-  return trpc.notes.list()
-})
+const getNotes = createCaller(async trpc => trpc.notes.list())
 
 const NotesPage: AFC = async () => {
   const notes = await getNotes()

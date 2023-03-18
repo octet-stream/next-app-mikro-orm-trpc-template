@@ -6,7 +6,10 @@ import {Toaster} from "component/Toaster"
 import "style/tailwind.css"
 
 export const metadata: Metadata = {
-  title: "Simple Notes",
+  title: {
+    default: "Simple Notes",
+    template: "%s — Simple Notes"
+  },
   icons: {
     icon: "/favicon.ico"
   }

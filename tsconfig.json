@@ -21,6 +21,7 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": "src",
+    "importHelpers": true,
     "plugins": [
       {
         "name": "next"

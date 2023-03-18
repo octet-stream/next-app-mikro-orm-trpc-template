@@ -1,5 +1,6 @@
 /* eslint-disable no-use-before-define */
 /* eslint-disable import/no-cycle */
+
 import {
   Entity,
   Property,

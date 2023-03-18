@@ -1,9 +1,11 @@
-import {router} from "server/trpc/router"
+import type {Metadata} from "next"
+
+import {Note} from "server/db/entity"
+import {getORM} from "server/lib/db/orm"
+import type {TNotesPageOutput} from "server/trpc/type/output/NotesPageOutput"
 
 import type {AFC} from "lib/type/AsyncFunctionComponent"
-import {createPageDataLoader} from "lib/util/createPageDataLoader"
-
-import {TNotesPageOutput} from "server/trpc/type/output/NotesPageOutput"
+import {createCaller} from "lib/trpc/server"
 
 import {NotesStateContextProvider} from "context/NotesStateContext"
 import {NoteStateContextProvider} from "context/NoteStateContext"
@@ -22,11 +24,20 @@ interface Props {
   params: Params
 }
 
-const getNote = createPageDataLoader((id: string) => {
-  const trpc = router.createCaller({})
+// TODO: Optimise this, maybe with cache on tRPC level
+export async function generateMetadata({params}: Props): Promise<Metadata> {
+  const orm = await getORM()
 
-  return trpc.note.getById({id})
-})
+  const {title} = await orm.em.findOneOrFail(Note, params.id, {
+    disableIdentityMap: true
+  })
+
+  return {
+    title
+  }
+}
+
+const getNote = createCaller((trpc, id: string) => trpc.note.getById({id}))
 
 const NoteViewPage: AFC<Props> = async ({params}) => {
   const note = await getNote(params.id)
