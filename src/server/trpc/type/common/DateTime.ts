@@ -7,5 +7,6 @@ import isString from "lodash/isString"
 export const DateTime = z
   .union([z.date(), z.string(), z.number()])
   .transform<Date>(date => isString(date) ? parseISO(date) : toDate(date))
+  .transform(date => date.toISOString())
 
 export type TDateTime = Infer<typeof DateTime>

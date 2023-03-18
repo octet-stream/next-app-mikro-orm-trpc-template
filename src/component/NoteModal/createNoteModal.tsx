@@ -65,9 +65,13 @@ export function createNoteModal<T extends AnyZodObject>({
 
     const onCloseReset = useEvent(() => reset())
 
-    const handler = handleSubmit(data => (
-      submit(omitBy(data, isEmpty)).then(() => closeModal())
-    ))
+    const handler = handleSubmit(async data => {
+      try {
+        submit(omitBy(data, isEmpty))
+      } finally {
+        closeModal()
+      }
+    })
 
     return (
       <Modal ref={modalRef} openButton={openButton} onClose={onCloseReset}>
