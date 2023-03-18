@@ -40,39 +40,6 @@ During my attempts to integrate MikroORM with Next.js I had to fall into several
   await orm.em.persistAndFlush(note) // Fails on the 2nd attempt to use it with the `Note` instance.
   ```
 
-* During the development, if you'd have to implement a page with dynamic route params, you'll might get MikroORM re-instaniated multiple times (each time you navigate to that page), if you use it in `getStaticPaths` to fetch the data. To avoid this, you can use `lib/util/patchStaticPaths.ts` helper. It simply returns empty paths in `development` env. Here's the example:
-
-  ```ts
-  import {patchStaticPaths} from "lib/util/patchStaticPaths"
-
-  import {getORM} from "server/lib/db/orm"
-
-  // This function will be returned only in production.
-  export const getStaticPaths = patchStaticPaths(async () => {
-    const orm = await getORM()
-
-    const notes = await orm.em.find(
-      Note,
-
-      {},
-
-      {
-        disableIdentityMap: true,
-        fields: ["id"],
-        limit: 1000,
-        orderBy: {
-          createdAt: "desc"
-        }
-      }
-    )
-
-    return {
-      fallback: "blocking",
-      paths: notes.map(({id}) => ({params: {id}}))
-    }
-  })
-  ```
-
 * MikroORM can't discover native TypeScipt enums if you were to define those in a separate file. To fix avoid this problem, you'll have to extract emun values manually (but remember about TS enum [quirks](https://youtu.be/jjMbPt_H3RQ)) and put those to `items` option of the `Enum` decorator, along with the `type` options set to needed column type. Here's how you can do this:
 
   ```ts
