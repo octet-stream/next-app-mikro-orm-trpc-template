@@ -12,15 +12,15 @@ test("Validates correct record input", async t => {
 
   const expected: TRecord = {
     id: await nanoid(),
-    createdAt: now,
-    updatedAt: now
+    createdAt: now.toISOString(),
+    updatedAt: now.toISOString()
   }
 
   const actual = await Record.parseAsync(expected)
 
   t.is(actual.id, expected.id)
-  t.is(Number(actual.createdAt), Number(expected.createdAt))
-  t.is(Number(actual.updatedAt), Number(expected.updatedAt))
+  t.is(actual.createdAt, expected.createdAt)
+  t.is(actual.updatedAt, expected.updatedAt)
 })
 
 test("Fails with incorrect input type", async t => {
