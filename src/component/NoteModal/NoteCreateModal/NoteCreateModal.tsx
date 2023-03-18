@@ -27,19 +27,25 @@ const Modal = createNoteModal({
 })
 
 interface Props {
+  updateList?: boolean
   redirect?: string | boolean
 }
 
-export const NoteCreateModal: FC<Props> = ({redirect}) => {
+export const NoteCreateModal: FC<Props> = ({
+  updateList = true,
+  redirect
+}) => {
   const router = useRouter()
   const state = useNotesStateProxy()
 
   const submit = useEvent<SubmitHandler<TNoteCreateInput>>(data => (
     client.note.create.mutate(data)
       .then(note => {
-        state.items.unshift(note)
-        state.itemsCount++
-        state.rowsCount++
+        if (updateList) {
+          state.items.unshift(note)
+          state.itemsCount++
+          state.rowsCount++
+        }
 
         if (redirect) {
           return router.replace(
