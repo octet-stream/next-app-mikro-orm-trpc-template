@@ -30,23 +30,22 @@ function maybeNotFoundError(error: unknown): never {
  *
  * @param caller A function that executes tRPC query
  */
-export const createCaller = <
-  TResult,
-  TArgs extends readonly unknown[]
->(
+export function createCaller<TResult, TArgs extends readonly unknown[]>(
   caller: CallerImplementation<TResult, TArgs>
-) => (...args: TArgs): MaybePromise<TResult> => {
-  try {
-    const trpc = router.createCaller({})
+) {
+  const trpc = router.createCaller({})
 
-    const result = caller(trpc, ...args)
+  return function decoratedCaller(...args: TArgs) {
+    try {
+      const result = caller(trpc, ...args)
 
-    if (result instanceof Promise) {
-      return result.catch(maybeNotFoundError)
+      if (result instanceof Promise) {
+        return result.catch(maybeNotFoundError)
+      }
+
+      return result
+    } catch (error) {
+      maybeNotFoundError(error)
     }
-
-    return result
-  } catch (error) {
-    maybeNotFoundError(error)
   }
 }
