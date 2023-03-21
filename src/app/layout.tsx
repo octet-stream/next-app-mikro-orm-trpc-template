@@ -12,7 +12,8 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/favicon.ico"
-  }
+  },
+  description: "Example Notes app made with Next.js experimental app directory, MikroORM and tRPC"
 }
 
 interface Props {
