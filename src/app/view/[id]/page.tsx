@@ -21,6 +21,8 @@ interface Props {
   params: Params
 }
 
+const getNote = createCaller((trpc, id: string) => trpc.note.getById({id}))
+
 // TODO: Optimise this, maybe with cache on tRPC level
 export async function generateMetadata({params}: Props): Promise<Metadata> {
   const orm = await getORM()
@@ -35,8 +37,6 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
     title
   }
 }
-
-const getNote = createCaller((trpc, id: string) => trpc.note.getById({id}))
 
 const NoteViewPage: AFC<Props> = async ({params}) => {
   const note = await getNote(params.id)

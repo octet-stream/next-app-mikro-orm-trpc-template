@@ -6,10 +6,12 @@ import {TRPCError} from "@trpc/server"
 import type {Caller} from "server/trpc/router"
 import {router} from "server/trpc/router"
 
-import type {MaybePromise} from "lib/type/MaybePromise"
-
 interface CallerImplementation<TResult, TArgs extends readonly unknown[]> {
-  (trpc: Caller, ...args: TArgs): MaybePromise<TResult>
+  (trpc: Caller, ...args: TArgs): TResult
+}
+
+interface DecoratedCaller<TResult, TArgs extends readonly unknown[]> {
+  (...args: TArgs): TResult
 }
 
 /**
@@ -32,14 +34,15 @@ function maybeNotFoundError(error: unknown): never {
  */
 export function createCaller<TResult, TArgs extends readonly unknown[]>(
   caller: CallerImplementation<TResult, TArgs>
-) {
+): DecoratedCaller<TResult, TArgs> {
   const trpc = router.createCaller({})
 
-  return function decoratedCaller(...args: TArgs) {
+  return function decoratedCaller(...args: TArgs): TResult {
     try {
       const result = caller(trpc, ...args)
 
       if (result instanceof Promise) {
+        // @ts-expect-error Not sure how to fix this yet. This function meant to be typed as both sync and async depending on the `TResult`.
         return result.catch(maybeNotFoundError)
       }
 
