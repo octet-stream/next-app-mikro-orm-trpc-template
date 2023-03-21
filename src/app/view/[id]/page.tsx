@@ -20,10 +20,10 @@ interface Props {
 const getNote = createCaller((trpc, id: string) => trpc.note.getById({id}))
 
 export async function generateMetadata({params}: Props): Promise<Metadata> {
-  const note = await getNote(params.id)
+  const {title} = await getNote(params.id)
 
   return {
-    title: note.title
+    title
   }
 }
 
