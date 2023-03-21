@@ -35,7 +35,7 @@ function maybeNotFoundError(error: unknown): never {
 export function createCaller<TResult, TArgs extends readonly unknown[]>(
   caller: CallerImplementation<TResult, TArgs>
 ): DecoratedCaller<TResult, TArgs> {
-  const trpc = router.createCaller({})
+  const trpc = router.createCaller({__calledWithCreateCaller: true})
 
   return function decoratedCaller(...args: TArgs): TResult {
     try {

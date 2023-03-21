@@ -1,8 +1,4 @@
-import {notFound} from "next/navigation"
 import type {Metadata} from "next"
-
-import {Note} from "server/db/entity"
-import {getORM} from "server/lib/db/orm"
 
 import type {AFC} from "lib/type/AsyncFunctionComponent"
 import {createCaller} from "lib/trpc/server"
@@ -23,18 +19,11 @@ interface Props {
 
 const getNote = createCaller((trpc, id: string) => trpc.note.getById({id}))
 
-// TODO: Optimise this, maybe with cache on tRPC level
 export async function generateMetadata({params}: Props): Promise<Metadata> {
-  const orm = await getORM()
-
-  const {title} = await orm.em.findOneOrFail(Note, params.id, {
-    disableIdentityMap: true,
-    failHandler: notFound,
-    filters: false
-  })
+  const note = await getNote(params.id)
 
   return {
-    title
+    title: note.title
   }
 }
 
