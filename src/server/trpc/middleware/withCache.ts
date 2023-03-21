@@ -1,8 +1,15 @@
 /* eslint-disable no-underscore-dangle */
 
+import type {MiddlewareFunction, ProcedureParams} from "@trpc/server"
+
+import type {GlobalContext} from "server/trpc/context"
 import {isCreateCallerContext} from "server/trpc/context"
 import {ProcedureCache} from "server/trpc/ProcedureCache"
-import {middleware} from "server/trpc/def"
+import {trpc} from "server/trpc/def"
+
+interface ContextWithCache {
+  cache: ProcedureCache
+}
 
 interface GlobalWithProcedureCache {
   __TRPC_PROCEDURE_CACHE__: ProcedureCache
@@ -19,7 +26,12 @@ function getCache(): ProcedureCache {
   return globalObject.__TRPC_PROCEDURE_CACHE__
 }
 
-export const withCache = middleware(async ({
+type CacheMiddleware = MiddlewareFunction<
+ProcedureParams<typeof trpc["_config"], GlobalContext>,
+ProcedureParams<typeof trpc["_config"], GlobalContext & ContextWithCache>
+>
+
+export const withCache: CacheMiddleware = async ({
   ctx,
   next,
   path,
@@ -36,15 +48,17 @@ export const withCache = middleware(async ({
     const cached = cache.get({path, rawInput, meta})
     if (cached) {
       // Not sure how safe this would be
-      return {ok: true, data: cached, marker: "middlewareMarker"}
+      return {
+        ok: true, data: cached, marker: "middlewareMarker"
+      } as any
     }
   }
 
-  const result: any = await next({ctx: {...ctx, cache}})
+  const result = await next({ctx: {...ctx, cache}})
 
   if (result.ok === true && enableCache) {
-    cache.set({path, rawInput, meta}, result.data)
+    cache.set({path, rawInput, meta}, (result as any).data)
   }
 
   return result
-})
+}

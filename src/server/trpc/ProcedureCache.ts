@@ -6,7 +6,7 @@ const DEFAULT_CACHE_LIMIT = 1000
 interface CacheKey<T = unknown> {
   path: string
   rawInput: T
-  meta?: object
+  meta?: unknown
 }
 
 interface CacheEntry<TValue extends object = object, TInput = unknown> {
@@ -65,9 +65,16 @@ export class ProcedureCache {
     return null
   }
 
-  // TODO: Implement this method
-  revalidate(): boolean {
-    throw new Error("Not implemented yet")
+  revalidate(key: PartialDeep<CacheKey>, value: object): boolean {
+    for (const entry of this.#entries) {
+      if (matchEntry(entry, key)) {
+        entry.value = value
+
+        return true
+      }
+    }
+
+    return false
   }
 
   clear() {
