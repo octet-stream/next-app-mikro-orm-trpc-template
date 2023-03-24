@@ -30,7 +30,8 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
   const {title} = await orm.em.findOneOrFail(Note, params.id, {
     disableIdentityMap: true,
     failHandler: notFound,
-    filters: false
+    filters: false,
+    fields: ["title"]
   })
 
   return {
