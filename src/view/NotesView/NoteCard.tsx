@@ -21,24 +21,25 @@ interface Props { }
 export const NoteCard: FC<Props> = () => {
   const state = useNoteStateProxy()
 
-  const {id, title, status, isCompleted, isRejected} = useNoteStateSnapshot()
+  // FIXME: This doesn't fire component re-render when isCompleted flag is changed
+  const {id, title, isCompleted, isRejected} = useNoteStateSnapshot()
 
   const notePath = `/view/${id}`
 
-  const updateStatus = useCallback(() => {
-    const newStatus = isCompleted
-      ? NoteStatus.INCOMPLETED
-      : NoteStatus.COMPLETED
+  const toggle = useCallback(async () => {
+    try {
+      const updated = await client.note.update.mutate({
+        id,
 
-    return (
-      client.note.update.mutate({id, status: newStatus})
-        .then(updated => patchNodeStatus(state, updated))
-        .catch(error => {
-          console.error(error)
-          toast.error("Can't update this note")
-        })
-    )
-  }, [id, status, isCompleted])
+        status: isCompleted ? NoteStatus.INCOMPLETED : NoteStatus.COMPLETED
+      })
+
+      patchNodeStatus(state, updated)
+    } catch (error) {
+      console.error(error)
+      toast.error("Can't update this note's status")
+    }
+  }, [id, isCompleted])
 
   return (
     <Card className="flex flex-row">
@@ -50,7 +51,7 @@ export const NoteCard: FC<Props> = () => {
           aria-label="Complete note"
           className="relative z-0 cursor-pointer w-6 h-6 flex items-center justify-center rounded-full border dark:border-gray-500 disabled:cursor-not-allowed disabled:dark:border-gray-700"
           disabled={isRejected}
-          onClick={updateStatus}
+          onClick={toggle}
         >
           {isCompleted && <Check size={16} className="text-gray-300 dark:text-gray-500" />}
 

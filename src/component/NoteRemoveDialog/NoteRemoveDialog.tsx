@@ -30,18 +30,20 @@ export const NoteRemoveDialog: FC<Props> = () => {
 
   const reset = useEvent(() => setAction("reject"))
 
-  const remove = useCallback(() => (
-    client.note.remove.mutate({
-      id,
+  const remove = useCallback(async () => {
+    try {
+      await client.note.remove.mutate({
+        id,
 
-      soft: action === "reject" && isRejected === false
-    })
-      .then(() => router.replace("/"))
-      .catch(error => {
-        console.error(error)
-        toast.error("Can't delete this note.")
+        soft: action === "reject" && isRejected === false
       })
-  ), [id, action])
+
+      router.replace("/")
+    } catch (error) {
+      console.error(error)
+      toast.error("Can't delete this note")
+    }
+  }, [id, action])
 
   return (
     <ConfirmationDialog

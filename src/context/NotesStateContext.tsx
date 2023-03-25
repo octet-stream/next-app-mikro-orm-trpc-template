@@ -1,6 +1,6 @@
 "use client"
 
-import type {TNotesPageOutput} from "server/trpc/type/output/NotesPageOutput"
+import type {ONotesPageOutput} from "server/trpc/type/output/NotesPageOutput"
 
 import {createStateContext} from "lib/context/createStateContext"
 
@@ -9,4 +9,4 @@ export const {
   StateContextProvider: NotesStateContextProvider,
   useStateSnapshot: useNotesStateSnapshot,
   useStateProxy: useNotesStateProxy
-} = createStateContext<TNotesPageOutput>()
+} = createStateContext<ONotesPageOutput>()

@@ -5,12 +5,12 @@ import {nanoid} from "nanoid/async"
 import {ZodError} from "zod"
 
 import {Record} from "./Record"
-import type {TRecord} from "./Record"
+import type {ORecord} from "./Record"
 
 test("Validates correct record input", async t => {
   const now = new Date()
 
-  const expected: TRecord = {
+  const expected: ORecord = {
     id: await nanoid(),
     createdAt: now.toISOString(),
     updatedAt: now.toISOString()

@@ -28,20 +28,20 @@ export const NoteCompleteButton: FC<Props> = ({className}) => {
 
   const Icon = useMemo(() => isCompleted ? CheckCheck : Check, [isCompleted])
 
-  const toggle = useCallback(() => (
-    client.note.update.mutate({
-      id,
+  const toggle = useCallback(async () => {
+    try {
+      const updated = await client.note.update.mutate({
+        id,
 
-      status: isCompleted
-        ? NoteStatus.INCOMPLETED
-        : NoteStatus.COMPLETED
-    })
-      .then(updated => patchNodeStatus(state, updated))
-      .catch(error => {
-        console.error(error)
-        toast.error("Can't update this note.")
+        status: isCompleted ? NoteStatus.INCOMPLETED : NoteStatus.COMPLETED
       })
-  ), [id, isCompleted])
+
+      patchNodeStatus(state, updated)
+    } catch (error) {
+      console.error(error)
+      toast.error("Can't update this note's status")
+    }
+  }, [id, isCompleted])
 
   return (
     <button type="button" aria-label="Complete note" onClick={toggle} className={cn("w-full flex rounded-md py-2 px-6 justify-center border", {"border-gray-300 dark:border-gray-500": isCompleted, "border-black dark:border-gray-400": !isCompleted}, className)}>

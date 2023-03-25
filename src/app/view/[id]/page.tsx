@@ -1,13 +1,16 @@
 import type {Metadata} from "next"
 
-import type {AFC} from "lib/type/AsyncFunctionComponent"
-import {createCaller} from "lib/trpc/server"
+import {Note} from "server/db/entity"
+import {getORM} from "server/lib/db/orm"
 
-import {NoteStateContextProvider} from "context/NoteStateContext"
+import {createCaller} from "lib/trpc/server"
+import type {AFC} from "lib/type/AsyncFunctionComponent"
+import {patchStaticParams} from "lib/util/patchStaticParams"
 
 import {NoteView} from "view/NoteView/NoteView"
 
-export const revalidate = 0
+// Revalidate page every 1 second, because dynamic segments are broken when the page is static. This value still will return old data on first render. This will likely be fixes in a future.
+export const revalidate = 1
 
 interface Params {
   id: string
@@ -18,6 +21,18 @@ interface Props {
 }
 
 const getNote = createCaller((trpc, id: string) => trpc.note.getById({id}))
+
+export const generateStaticParams = patchStaticParams<Params>(async () => {
+  const orm = await getORM()
+
+  const notes = await orm.em.find(Note, {}, {
+    disableIdentityMap: true,
+    filters: false,
+    fields: ["id"]
+  })
+
+  return notes.map(({id}) => ({id}))
+})
 
 export async function generateMetadata({params}: Props): Promise<Metadata> {
   const {title} = await getNote(params.id)
@@ -30,11 +45,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 const NoteViewPage: AFC<Props> = async ({params}) => {
   const note = await getNote(params.id)
 
-  return (
-    <NoteStateContextProvider data={note}>
-      <NoteView />
-    </NoteStateContextProvider>
-  )
+  return <NoteView note={note} />
 }
 
 export default NoteViewPage
