@@ -22,10 +22,10 @@ const globalObject = globalThis as typeof globalThis & WithORM
  * Returns MikroORM instance.
  * Creates the new if one does not exists, then caches it.
  */
-export function getORM() {
+export function getORM(): Promise<MikroORM> {
   // Return cached orm initialization to deduplicate unnecessary connections (when page or layout requests run concurrently)
   if (globalObject.__CACHED_ORM_PROMISE__ instanceof Promise) {
-    return globalObject.__CACHED_ORM_PROMISE__
+    return Promise.resolve(globalObject.__CACHED_ORM_PROMISE__)
   }
 
   // If no MikroORM instance is cached, initialize new ORM and cache its initialization Promise.
@@ -38,10 +38,10 @@ export function getORM() {
         return orm
       })
 
-    return globalObject.__CACHED_ORM_PROMISE__
+    return Promise.resolve(globalObject.__CACHED_ORM_PROMISE__)
   }
 
-  return globalObject.__CACHED_ORM__
+  return Promise.resolve(globalObject.__CACHED_ORM__)
 }
 
 export async function forkEntityManager(): Promise<EntityManager> {
