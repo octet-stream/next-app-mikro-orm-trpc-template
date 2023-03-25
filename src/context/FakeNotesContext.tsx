@@ -3,7 +3,7 @@
 import type {FC, ReactNode} from "react"
 import {useRef} from "react"
 
-import type {TNotesPageOutput} from "server/trpc/type/output/NotesPageOutput"
+import type {ONotesPageOutput} from "server/trpc/type/output/NotesPageOutput"
 
 import {NotesStateContextProvider} from "./NotesStateContext"
 
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const FakeNotesContext: FC<Props> = ({children}) => {
-  const fakeNodes = useRef<TNotesPageOutput>({
+  const fakeNodes = useRef<ONotesPageOutput>({
     pagesCount: 1,
     rowsCount: 0,
     itemsCount: 0,

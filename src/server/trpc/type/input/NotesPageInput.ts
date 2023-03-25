@@ -1,4 +1,4 @@
-import type {infer as Infer} from "zod"
+import type {input, output} from "zod"
 import {z} from "zod"
 
 import {createPageInput} from "server/trpc/helper/createPageInput"
@@ -11,4 +11,6 @@ export const NotesPageInput = createPageInput({maxLimit: 500}, z.object({
     .default({})
 }))
 
-export type TNotesPageInput = Infer<typeof NotesPageInput>
+export type INotesPageInput = input<typeof NotesPageInput>
+
+export type ONotesPageInput = output<typeof NotesPageInput>

@@ -1,9 +1,9 @@
 "use client"
 
 import {useForm, SubmitHandler, FieldValues} from "react-hook-form"
-import type {AnyZodObject, infer as Infer} from "zod"
 import {zodResolver} from "@hookform/resolvers/zod"
 import type {FC, KeyboardEventHandler} from "react"
+import type {AnyZodObject, input} from "zod"
 import {useEvent} from "react-use-event-hook"
 import {useRef} from "react"
 
@@ -11,7 +11,7 @@ import TextArea from "react-textarea-autosize"
 import isEmpty from "lodash/isEmpty"
 import omitBy from "lodash/omitBy"
 
-import {TNoteCreateInput} from "server/trpc/type/input/NoteCreateInput"
+import {INoteCreateInput} from "server/trpc/type/input/NoteCreateInput"
 
 import type {ModalRef, BaseModalProps} from "component/Modal"
 import {Modal, ModalPanel, ModalTitle} from "component/Modal"
@@ -34,7 +34,7 @@ export function createNoteModal<T extends AnyZodObject>({
   name,
   validate
 }: CreateNoteModalOptions<T>) {
-  const NoteModal: FC<Props<Infer<T>>> = ({
+  const NoteModal: FC<Props<input<T>>> = ({
     title,
     submit,
     openButton,
@@ -47,10 +47,10 @@ export function createNoteModal<T extends AnyZodObject>({
       register,
       formState,
       handleSubmit,
-    } = useForm<TNoteCreateInput>({
+    } = useForm<INoteCreateInput>({
       mode: "onTouched",
       resolver: zodResolver(validate),
-      values: values as TNoteCreateInput
+      values: values as INoteCreateInput
     })
 
     const blockReturn = useEvent<BlockReturnHandler>(event => {

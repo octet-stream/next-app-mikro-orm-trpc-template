@@ -8,7 +8,7 @@ import type {FC} from "react"
 import merge from "lodash/merge"
 
 import {NoteUpdateInput} from "server/trpc/type/input/NoteUpdateInput"
-import type {TNoteUpdateInput} from "server/trpc/type/input/NoteUpdateInput"
+import type {INoteUpdateInput} from "server/trpc/type/input/NoteUpdateInput"
 
 import {client} from "lib/trpc/client"
 
@@ -18,7 +18,7 @@ import {createNoteModal} from "../createNoteModal"
 
 import {Open} from "./Open"
 
-type Submit = SubmitHandler<Omit<TNoteUpdateInput, "id">>
+type Submit = SubmitHandler<Omit<INoteUpdateInput, "id">>
 
 const Modal = createNoteModal({
   name: "Update",

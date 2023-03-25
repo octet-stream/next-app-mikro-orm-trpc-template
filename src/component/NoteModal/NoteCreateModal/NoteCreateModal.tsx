@@ -11,7 +11,7 @@ import type {FC} from "react"
 import isString from "lodash/isString"
 
 import {NoteCreateInput} from "server/trpc/type/input/NoteCreateInput"
-import type {TNoteCreateInput} from "server/trpc/type/input/NoteCreateInput"
+import type {INoteCreateInput} from "server/trpc/type/input/NoteCreateInput"
 
 import {client} from "lib/trpc/client"
 
@@ -26,6 +26,8 @@ const Modal = createNoteModal({
   validate: NoteCreateInput
 })
 
+type Submit = SubmitHandler<Omit<INoteCreateInput, "completions">>
+
 interface Props {
   updateList?: boolean
   redirect?: string | boolean
@@ -38,7 +40,7 @@ export const NoteCreateModal: FC<Props> = ({
   const router = useRouter()
   const state = useNotesStateProxy()
 
-  const submit = useEvent<SubmitHandler<TNoteCreateInput>>(data => (
+  const submit = useEvent<Submit>(data => (
     client.note.create.mutate(data)
       .then(note => {
         if (updateList) {
