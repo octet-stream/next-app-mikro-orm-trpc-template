@@ -67,7 +67,7 @@ export function createNoteModal<T extends AnyZodObject>({
 
     const handler = handleSubmit(async data => {
       try {
-        submit(omitBy(data, isEmpty))
+        await submit(omitBy(data, isEmpty))
       } finally {
         closeModal()
       }
@@ -102,7 +102,7 @@ export function createNoteModal<T extends AnyZodObject>({
             />
 
             <div className="flex flex-row mt-4">
-              <Button type="submit" variant="primary" disabled={!formState.isValid}>
+              <Button type="submit" variant="primary" disabled={!formState.isValid} loading={formState.isSubmitting}>
                 Submit
               </Button>
 

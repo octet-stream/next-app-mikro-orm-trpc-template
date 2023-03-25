@@ -1,7 +1,5 @@
 "use client"
 
-/* eslint-disable react/no-unstable-nested-components */
-
 import type {SubmitHandler} from "react-hook-form"
 import {toast} from "react-hot-toast"
 import {useCallback} from "react"
@@ -32,19 +30,18 @@ export const NoteUpdateModal: FC = () => {
 
   const proxy = useNoteStateProxy()
 
-  const submit = useCallback<Submit>(data => (
-    client.note.update.mutate({...data, id})
-      .then(updated => {
-        // Update state
-        merge(proxy, updated)
+  const submit = useCallback<Submit>(async data => {
+    try {
+      const updated = await client.note.update.mutate({...data, id})
 
-        toast.success("Note updated!")
-      })
-      .catch(error => {
-        console.log(error)
-        toast.error("Can't update this note.")
-      })
-  ), [id])
+      merge(proxy, updated)
+
+      toast.success("Note updated!")
+    } catch (error) {
+      console.error(error)
+      toast.error("Can't update this note.")
+    }
+  }, [id])
 
   return (
     <Modal

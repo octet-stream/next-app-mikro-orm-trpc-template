@@ -12,6 +12,9 @@ import {NoteStateContextProvider} from "context/NoteStateContext"
 
 import {NoteView} from "view/NoteView/NoteView"
 
+// Revalidate page every 1 second, because dynamic segments are broken when the page is static. This value still will return old data on first render. This will likely be fixes in a future.
+export const revalidate = 1
+
 interface Params {
   id: string
 }
