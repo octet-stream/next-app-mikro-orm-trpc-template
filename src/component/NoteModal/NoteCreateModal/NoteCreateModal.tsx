@@ -13,6 +13,7 @@ import isString from "lodash/isString"
 import {NoteCreateInput} from "server/trpc/type/input/NoteCreateInput"
 import type {INoteCreateInput} from "server/trpc/type/input/NoteCreateInput"
 
+import {addPageItem} from "lib/util/patchPageState"
 import {client} from "lib/trpc/client"
 
 import {useNotesStateProxy} from "context/NotesStateContext"
@@ -40,26 +41,22 @@ export const NoteCreateModal: FC<Props> = ({
   const router = useRouter()
   const state = useNotesStateProxy()
 
-  const submit = useEvent<Submit>(data => (
-    client.note.create.mutate(data)
-      .then(note => {
-        if (updateList) {
-          state.items.unshift(note)
-          state.itemsCount++
-          state.rowsCount++
-        }
+  const submit = useEvent<Submit>(async data => {
+    try {
+      const created = await client.note.create.mutate(data)
 
-        if (redirect) {
-          return router.replace(
-            isString(redirect) ? redirect : `/view/${note.id}`,
-          )
-        }
-      })
-      .catch(error => {
-        console.log(error)
-        toast.error("Can't create a note.")
-      })
-  ))
+      if (updateList) {
+        addPageItem(state, created)
+      }
+
+      if (redirect) {
+        router.replace(isString(redirect) ? redirect : `/view/${created.id}`)
+      }
+    } catch (error) {
+      console.error(error)
+      toast.error("Can't create a note")
+    }
+  })
 
   return (
     <Modal

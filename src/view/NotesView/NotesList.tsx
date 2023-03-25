@@ -5,7 +5,7 @@ import type {FC} from "react"
 import {useNotesStateSnapshot} from "context/NotesStateContext"
 import {NoteStateContextProvider} from "context/NoteStateContext"
 
-import {NoteCard} from "component/NoteCard"
+import {NoteCard} from "./NoteCard"
 
 export const NotesList: FC = () => {
   const {items} = useNotesStateSnapshot()

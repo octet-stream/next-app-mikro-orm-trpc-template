@@ -8,6 +8,9 @@ import cn from "clsx"
 
 import {SpinnerCircularFixed} from "spinners-react"
 
+// @ts-expect-error This is temporarily fix for https://github.com/adexin/spinners-react/issues/22
+delete SpinnerCircularFixed.defaultProps
+
 interface BaseProps extends ComponentPropsWithoutRef<"button"> {
   variant?: "primary" | "secondary"
   color?: "red" | "brand"
@@ -86,7 +89,15 @@ export const Button = forwardRef<HTMLButtonElement, Props>((
 
       {loading && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <SpinnerCircularFixed size={24} color="white" secondaryColor="black" speed={200} />
+          <SpinnerCircularFixed
+            enabled
+            size={24}
+            color="white"
+            secondaryColor="black"
+            speed={200}
+            still={false}
+            thickness={100}
+          />
         </div>
       )}
     </button>
