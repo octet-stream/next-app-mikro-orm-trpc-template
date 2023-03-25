@@ -11,21 +11,34 @@ interface RunIsolatedCallback<T> {
   (em: EntityManager): T
 }
 
-type GlobalThis = typeof globalThis
-
-interface GlobalThisWithORM extends GlobalThis {
+interface WithORM {
   __CACHED_ORM__: MikroORM
+  __CACHED_ORM_PROMISE__?: Promise<MikroORM>
 }
 
-const globalObject = globalThis as GlobalThisWithORM
+const globalObject = globalThis as typeof globalThis & WithORM
 
 /**
  * Returns MikroORM instance.
  * Creates the new if one does not exists, then caches it.
  */
-export async function getORM() {
+export function getORM() {
+  // Return cached orm initialization to deduplicate unnecessary connections (when page or layout requests run concurrently)
+  if (globalObject.__CACHED_ORM_PROMISE__ instanceof Promise) {
+    return globalObject.__CACHED_ORM_PROMISE__
+  }
+
+  // If no MikroORM instance is cached, initialize new ORM and cache its initialization Promise.
   if (!globalObject.__CACHED_ORM__) {
-    globalObject.__CACHED_ORM__ = await MikroORM.init(getConfig())
+    globalObject.__CACHED_ORM_PROMISE__ = MikroORM.init(getConfig())
+      .then(orm => {
+        globalObject.__CACHED_ORM_PROMISE__ = undefined // Remove initialization promise
+        globalObject.__CACHED_ORM__ = orm // Cache ORM instance
+
+        return orm
+      })
+
+    return globalObject.__CACHED_ORM_PROMISE__
   }
 
   return globalObject.__CACHED_ORM__
