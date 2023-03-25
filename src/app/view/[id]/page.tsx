@@ -8,8 +8,6 @@ import {createCaller} from "lib/trpc/server"
 import type {AFC} from "lib/type/AsyncFunctionComponent"
 import {patchStaticParams} from "lib/util/patchStaticParams"
 
-import {NoteStateContextProvider} from "context/NoteStateContext"
-
 import {NoteView} from "view/NoteView/NoteView"
 
 // Revalidate page every 1 second, because dynamic segments are broken when the page is static. This value still will return old data on first render. This will likely be fixes in a future.
@@ -56,11 +54,7 @@ export async function generateMetadata({params}: Props): Promise<Metadata> {
 const NoteViewPage: AFC<Props> = async ({params}) => {
   const note = await getNote(params.id)
 
-  return (
-    <NoteStateContextProvider data={note}>
-      <NoteView />
-    </NoteStateContextProvider>
-  )
+  return <NoteView note={note} />
 }
 
 export default NoteViewPage
