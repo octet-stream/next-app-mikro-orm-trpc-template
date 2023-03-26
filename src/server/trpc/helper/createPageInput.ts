@@ -1,4 +1,5 @@
-import type {ZodObject, input, output} from "zod"
+/* eslint-disable @typescript-eslint/indent */
+import type {ZodObject, input, output, ZodRawShape} from "zod"
 import {z} from "zod"
 
 import type {MaybeNull} from "lib/type/MaybeNull"
@@ -13,10 +14,14 @@ const defaults: Required<CreatePageInputOptions> = {
   maxLimit: null
 }
 
+type PageOutput<T extends ZodRawShape = never> = [T] extends [never]
+  ? {args: PageArgs}
+  : {args: PageArgs} & output<ZodObject<T>>
+
 /**
  * Creates PageInput type with given `maxLimit` option
  */
-export function createPageInput<T extends {}>(
+export function createPageInput<T extends {} = never>(
   options?: CreatePageInputOptions,
   extensions?: ZodObject<T>
 ) {
@@ -43,14 +48,12 @@ export function createPageInput<T extends {}>(
     : PageBaseInput
 
   return PageInput
-    .transform(({cursor, limit, ...rest}) => ({
-      ...rest as output<ZodObject<T>>,
-
-      args: new PageArgs({cursor, limit, maxLimit})
-    }))
     .optional()
-    // @ts-expect-error Ignore type casting here, temporarily
-    .default({})
+    .transform(({cursor, limit, ...rest} = {}) => {
+      const args = new PageArgs({cursor, limit, maxLimit})
+
+      return {...rest, args} as PageOutput<T>
+    })
 }
 
 /**
