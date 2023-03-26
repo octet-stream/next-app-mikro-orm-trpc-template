@@ -16,11 +16,11 @@ interface Props {
   active?: NoteStatusFilter
 }
 
-export const NotesTabs: FC<Props> = ({active}) => (
+export const NotesTabs: FC<Props> = ({active = NoteStatusFilter.ALL}) => (
   <ul className="mb-5 w-full flex bg-black text-white dark:bg-slate-800 rounded-md">
-    {filters.map(([key, name]) => (
-      <li key={key}>
-        <NoteTab name={name} status={key} active={active === key} />
+    {filters.map(([status, name]) => (
+      <li key={status}>
+        <NoteTab name={name} status={status} active={active === status} />
       </li>
     ))}
   </ul>
