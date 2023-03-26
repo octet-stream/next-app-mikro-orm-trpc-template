@@ -14,7 +14,7 @@ interface SearchParams {
 
 const getNotes = createCaller(
   async (trpc, params: SearchParams = {}) => trpc.notes.list({
-    cursor: params.page ? Number(params.page) : undefined,
+    cursor: params.page,
     filter: params.status ? {status: params.status} : undefined
   })
 )
