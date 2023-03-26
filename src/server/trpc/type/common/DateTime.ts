@@ -1,8 +1,11 @@
+/* eslint-disable import/no-duplicates */
+
 import type {input, output} from "zod"
-import {parseISO, toDate} from "date-fns"
 import {z} from "zod"
 
 import isString from "lodash/isString"
+import toDate from "date-fns/toDate"
+import parseISO from "date-fns/parseISO"
 
 export const DateTime = z
   .union([z.date(), z.string(), z.number()])
