@@ -52,7 +52,6 @@ export function createPageInput<T extends ZodRawShape = never>(
     // @ts-expect-error Ignore typings error here, it should work as expected
     .default({})
     .transform(({cursor, limit, ...rest}) => {
-      console.log({rest})
       const args = new PageArgs({cursor, limit, maxLimit})
 
       return {...rest, args} as PageOutput<T>
