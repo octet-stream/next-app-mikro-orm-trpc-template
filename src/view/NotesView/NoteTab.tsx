@@ -30,7 +30,7 @@ export const NoteTab: FC<Props> = ({active, name, status}) => {
       result.set("status", status)
     }
 
-    return `${pathname}?${result.toString()}`
+    return `${pathname || "/"}?${result.toString()}`
   }, [status, search, pathname])
 
   return (
