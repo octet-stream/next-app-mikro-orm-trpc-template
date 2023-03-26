@@ -105,6 +105,7 @@
     "spinners-react": "1.0.7",
     "superjson": "1.12.2",
     "tslib": "^2.5.0",
+    "type-fest": "^3.7.0",
     "unified": "10.1.2",
     "validator": "13.9.0",
     "valtio": "1.10.3",
