@@ -21,7 +21,7 @@ type PageOutput<T extends ZodRawShape = never> = [T] extends [never]
 /**
  * Creates PageInput type with given `maxLimit` option
  */
-export function createPageInput<T extends {} = never>(
+export function createPageInput<T extends ZodRawShape = never>(
   options?: CreatePageInputOptions,
   extensions?: ZodObject<T>
 ) {
@@ -49,7 +49,10 @@ export function createPageInput<T extends {} = never>(
 
   return PageInput
     .optional()
-    .transform(({cursor, limit, ...rest} = {}) => {
+    // @ts-expect-error Ignore typings error here, it should work as expected
+    .default({})
+    .transform(({cursor, limit, ...rest}) => {
+      console.log({rest})
       const args = new PageArgs({cursor, limit, maxLimit})
 
       return {...rest, args} as PageOutput<T>
