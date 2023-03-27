@@ -6,7 +6,7 @@ import {
   NoteStatusFilterNames
 } from "server/trpc/type/common/NoteStatusFilter"
 
-import {NoteTab} from "./NoteTab"
+import {NoteTab} from "./NotesTab"
 
 const filters = Object.entries(
   NoteStatusFilterNames
