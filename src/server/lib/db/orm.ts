@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-undef */
+
 import "reflect-metadata"
 
 import type {EntityManager} from "@mikro-orm/mysql"
@@ -30,7 +31,8 @@ export function getORM(): Promise<MikroORM> {
 
   // If no MikroORM instance is cached, initialize new ORM and cache its initialization Promise.
   if (!globalObject.__CACHED_ORM__) {
-    globalObject.__CACHED_ORM_PROMISE__ = MikroORM.init(getConfig())
+    globalObject.__CACHED_ORM_PROMISE__ = getConfig()
+      .then(config => MikroORM.init(config))
       .then(orm => {
         globalObject.__CACHED_ORM_PROMISE__ = undefined // Remove initialization promise
         globalObject.__CACHED_ORM__ = orm // Cache ORM instance
