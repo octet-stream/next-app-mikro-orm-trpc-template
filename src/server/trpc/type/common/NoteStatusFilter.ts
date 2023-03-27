@@ -15,3 +15,7 @@ export const NoteStatusFilterNames = {
 } as const
 
 export const NoteStatusFilterSchema = z.nativeEnum(NoteStatusFilter)
+
+export const NoteStatusFilterInput = NoteStatusFilterSchema
+  .optional()
+  .default(NoteStatusFilter.ALL)

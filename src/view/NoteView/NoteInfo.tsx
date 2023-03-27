@@ -1,3 +1,5 @@
+"use client"
+
 import format from "date-fns/format"
 import type {FC} from "react"
 import {useMemo} from "react"
