@@ -30,6 +30,11 @@ export const NoteTab: FC<Props> = ({active, name, status}) => {
       result.set("status", status)
     }
 
+    // Reset page cursor if present, so we won't get 404 error
+    if (result.has("page")) {
+      result.set("page", "1")
+    }
+
     return [pathname || "/", result.toString()].filter(Boolean).join("?")
   }, [status, search, pathname])
 
