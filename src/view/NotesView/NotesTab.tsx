@@ -24,7 +24,7 @@ export const NoteTab: FC<Props> = ({active, name, status}) => {
   const pathname = usePathname()
 
   const link = useMemo<string>(() => {
-    const result = new URLSearchParams(search ?? [])
+    const result = new URLSearchParams(search ? search.toString() : [])
 
     if (status) {
       result.set("status", status)
