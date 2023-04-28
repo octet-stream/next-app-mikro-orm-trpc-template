@@ -1,21 +1,27 @@
 import {resolve, join} from "node:path"
 
 import {defineConfig} from "@mikro-orm/mysql"
-import {z} from "zod"
+import {z, ZodIssueCode} from "zod"
 
 import {Note, Completion} from "server/db/entity"
 
 const ROOT = resolve("db")
 
+const ConnectionPortString = z.string().optional()
+  .superRefine((value, ctx) => {
+    if (value && /^[0-9]+$/.test(value) === false) {
+      ctx.addIssue({
+        code: ZodIssueCode.invalid_string,
+        validation: "regex"
+      })
+    }
+  })
+  .transform(port => port ? parseInt(port, 10) : undefined)
+
 const ConnectionConfig = z.object({
   dbName: z.string().regex(/^[a-z0-9-_]+$/i),
   host: z.string().optional(),
-  port: z
-    .union([
-      z.string().regex(/^[0-9]+$/).transform(port => parseInt(port, 10)),
-      z.number()
-    ])
-    .optional(),
+  port: z.union([ConnectionPortString, z.number()]).optional(),
   debug: z.union([
     z.literal("development"),
     z.literal("production"),
