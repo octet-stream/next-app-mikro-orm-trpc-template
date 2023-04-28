@@ -1,6 +1,6 @@
 import type {FC} from "react"
 
-import {ONotesPageOutput} from "server/trpc/type/output/NotesPageOutput"
+import type {ONotesPageOutput} from "server/trpc/type/output/NotesPageOutput"
 
 import {NotesStateContextProvider} from "context/NotesStateContext"
 

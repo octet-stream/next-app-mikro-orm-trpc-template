@@ -3,7 +3,8 @@ import {NoteStatusFilter} from "server/trpc/type/common/NoteStatusFilter"
 import type {AFC} from "lib/type/AsyncFunctionComponent"
 import {createCaller} from "lib/trpc/server"
 
-import {NotesView, NotesTabs} from "view/NotesView"
+import {NotesView} from "./_/component/NotesView"
+import {NotesTabs} from "./_/component/NotesTabs"
 
 export const revalidate: number = 0 // Make page dynamic
 
