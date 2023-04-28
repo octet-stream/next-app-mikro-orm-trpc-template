@@ -4,9 +4,10 @@ import type {Metadata} from "next"
 import {Note} from "server/db/entity"
 import {getORM} from "server/lib/db/orm"
 
-import {createCaller} from "lib/trpc/server"
 import type {AFC} from "lib/type/AsyncFunctionComponent"
 import {patchStaticParams} from "lib/util/patchStaticParams"
+
+import {getNote} from "./_/loader/getNote"
 
 import {NoteView} from "./_/component/NoteView"
 
@@ -21,8 +22,7 @@ interface Props {
   params: Params
 }
 
-const getNote = createCaller((trpc, id: string) => trpc.note.getById({id}))
-
+// TODO: Reuse getNote query here when I add cache
 export const generateStaticParams = patchStaticParams<Params>(async () => {
   const orm = await getORM()
 
@@ -36,6 +36,7 @@ export const generateStaticParams = patchStaticParams<Params>(async () => {
 })
 
 // TODO: Optimise this, maybe with cache on tRPC level
+// TODO: Reuse getNote query here when I add cache
 export async function generateMetadata({params}: Props): Promise<Metadata> {
   const orm = await getORM()
 

@@ -1,24 +1,18 @@
 import {NoteStatusFilter} from "server/trpc/type/common/NoteStatusFilter"
 
 import type {AFC} from "lib/type/AsyncFunctionComponent"
-import {createCaller} from "lib/trpc/server"
+
+import {getNotes} from "./_/loader/getNotes"
 
 import {NotesView} from "./_/component/NotesView"
 import {NotesTabs} from "./_/component/NotesTabs"
 
 export const revalidate: number = 0 // Make page dynamic
 
-interface SearchParams {
+export interface SearchParams {
   page?: string
   status?: NoteStatusFilter
 }
-
-const getNotes = createCaller(
-  async (trpc, params: SearchParams = {}) => trpc.notes.list({
-    cursor: params.page,
-    filter: params.status ? {status: params.status} : undefined
-  })
-)
 
 interface Props {
   searchParams: SearchParams
