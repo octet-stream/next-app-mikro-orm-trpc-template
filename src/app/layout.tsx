@@ -3,6 +3,8 @@ import type {Metadata} from "next"
 
 import {Toaster} from "component/Toaster"
 
+import {createEmojiIcon} from "lib/util/createEmojiIcon"
+
 import "style/tailwind.css"
 
 export const metadata: Metadata = {
@@ -11,7 +13,7 @@ export const metadata: Metadata = {
     template: "%s — Simple Notes"
   },
   icons: {
-    icon: "/favicon.ico"
+    icon: createEmojiIcon("📝")
   }
 }
 

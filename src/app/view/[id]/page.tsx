@@ -3,9 +3,11 @@ import type {Metadata} from "next"
 
 import {Note} from "server/db/entity"
 import {getORM} from "server/lib/db/orm"
+import {NoteStatus} from "server/trpc/type/common/NoteStatus"
 
-import type {AFC} from "lib/type/AsyncFunctionComponent"
 import {patchStaticParams} from "lib/util/patchStaticParams"
+import type {AFC} from "lib/type/AsyncFunctionComponent"
+import {createEmojiIcon} from "lib/util/createEmojiIcon"
 
 import {getNote} from "./_/loader/getNote"
 
@@ -20,6 +22,21 @@ interface Params {
 
 interface Props {
   params: Params
+}
+
+function getEmojiForStatus(status: NoteStatus): string {
+  switch (status) {
+  case NoteStatus.COMPLETED:
+    return "✅"
+  case NoteStatus.REJECTED:
+    return "🗑️"
+  case NoteStatus.IN_PROGRESS:
+    return "▶️"
+  case NoteStatus.PAUSED:
+    return "⏸️"
+  default:
+    return "📝"
+  }
 }
 
 // TODO: Reuse getNote query here when I add cache
@@ -40,15 +57,16 @@ export const generateStaticParams = patchStaticParams<Params>(async () => {
 export async function generateMetadata({params}: Props): Promise<Metadata> {
   const orm = await getORM()
 
-  const {title} = await orm.em.findOneOrFail(Note, params.id, {
+  const {title, status} = await orm.em.findOneOrFail(Note, params.id, {
     disableIdentityMap: true,
     failHandler: notFound,
     filters: false,
-    fields: ["title"]
+    fields: ["title", "status"]
   })
 
   return {
-    title
+    title,
+    icons: {icon: createEmojiIcon(getEmojiForStatus(status))}
   }
 }
 
