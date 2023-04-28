@@ -9,8 +9,13 @@ const ROOT = resolve("db")
 
 const ConnectionConfig = z.object({
   dbName: z.string().regex(/[a-z0-9-_]+/i),
-  host: z.string().optional().default("localhost"),
-  port: z.union([z.string().regex(/[0-9]+/), z.number()]).transform(port => +port),
+  host: z.string().optional(),
+  port: z
+    .union([
+      z.string().regex(/[0-9]+/).transform(port => +port),
+      z.number()
+    ])
+    .optional(),
   debug: z.union([
     z.literal("development"),
     z.literal("production"),
