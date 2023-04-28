@@ -3,7 +3,6 @@ import anyTest from "ava"
 import {RequestContext} from "@mikro-orm/core"
 import type {ImplementationFn, TestFn} from "ava"
 import type {MikroORM} from "@mikro-orm/core"
-import {noop} from "lodash"
 
 import {getORM} from "server/lib/db/orm"
 import type {Caller} from "server/trpc/router"
@@ -26,13 +25,12 @@ const test = anyTest as TestFn<WithTRPCContext>
 export const withTRPC = test.macro(async (t, fn: Implementation) => {
   const orm = await getORM()
 
+  // TODO: Use fetch's Request, Response and Headers when targeting to Node >= 16
   const caller = router.createCaller({
     req: {
       headers: {}
     },
-    res: {
-      revalidate: noop
-    }
+    resHeaders: {}
   })
 
   return RequestContext.createAsync(orm.em, async () => fn(t, caller, orm))
