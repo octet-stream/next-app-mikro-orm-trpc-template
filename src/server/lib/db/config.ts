@@ -8,11 +8,11 @@ import {Note, Completion} from "server/db/entity"
 const ROOT = resolve("db")
 
 const ConnectionConfig = z.object({
-  dbName: z.string().regex(/[a-z0-9-_]+/i),
+  dbName: z.string().regex(/^[a-z0-9-_]+$/i),
   host: z.string().optional(),
   port: z
     .union([
-      z.string().regex(/[0-9]+/).transform(port => +port),
+      z.string().regex(/^[0-9]+$/).transform(port => +port),
       z.number()
     ])
     .optional(),
