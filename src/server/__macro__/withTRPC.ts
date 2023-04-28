@@ -8,6 +8,8 @@ import {getORM} from "server/lib/db/orm"
 import type {Caller} from "server/trpc/router"
 import {router} from "server/trpc/router"
 
+import {serverAddress} from "lib/util/serverAddress"
+
 export interface WithTRPCContext { }
 
 type Args = [trpc: Caller, orm: MikroORM]
@@ -25,13 +27,10 @@ const test = anyTest as TestFn<WithTRPCContext>
 export const withTRPC = test.macro(async (t, fn: Implementation) => {
   const orm = await getORM()
 
-  // TODO: Use fetch's Request, Response and Headers when targeting to Node >= 16
-  const caller = router.createCaller({
-    req: {
-      headers: {}
-    },
-    resHeaders: {}
-  })
+  const req = new Request(serverAddress)
+  const resHeaders = new Headers()
+
+  const caller = router.createCaller({req, resHeaders})
 
   return RequestContext.createAsync(orm.em, async () => fn(t, caller, orm))
 })
