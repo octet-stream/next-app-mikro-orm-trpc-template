@@ -12,7 +12,7 @@ const ConnectionConfig = z.object({
   host: z.string().optional(),
   port: z
     .union([
-      z.string().regex(/^[0-9]+$/).transform(port => +port),
+      z.string().regex(/^[0-9]+$/).transform(port => parseInt(port, 10)),
       z.number()
     ])
     .optional(),
