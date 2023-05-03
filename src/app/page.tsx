@@ -7,7 +7,7 @@ import {getNotes} from "./_/loader/getNotes"
 import {NotesView} from "./_/component/NotesView"
 import {NotesTabs} from "./_/component/NotesTabs"
 
-export const revalidate: number = 0 // Make page dynamic
+export const dynamic = "force-dynamic" // Make page dynamic
 
 export interface SearchParams {
   page?: string
