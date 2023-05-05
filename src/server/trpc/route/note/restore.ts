@@ -1,3 +1,4 @@
+import {revalidate} from "server/lib/util/revalidate"
 import {TRPCError} from "@trpc/server"
 
 import {NoteStatusFilter} from "server/trpc/type/common/NoteStatusFilter"
@@ -26,6 +27,9 @@ export const restore = procedure
     note.status = NoteStatus.INCOMPLETED
 
     await orm.em.flush()
+
+    revalidate("/")
+    revalidate(`/view/${note.id}`)
 
     return note
   })

@@ -3,7 +3,6 @@ const config = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    appDir: true,
     serverComponentsExternalPackages: [
       "@mikro-orm/core",
       "@mikro-orm/mysql",

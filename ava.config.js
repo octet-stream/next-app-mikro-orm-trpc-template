@@ -14,6 +14,7 @@ module.exports = {
     "./src/server/__helper__/polyfills.ts"
   ],
   environmentVariables: {
-    "TS_NODE_PROJECT": "tsconfig.ava.json"
+    "TS_NODE_PROJECT": "tsconfig.ava.json",
+    "TEST_RUNNER": "ava"
   }
 }

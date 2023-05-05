@@ -1,5 +1,6 @@
 import {TRPCError} from "@trpc/server"
 
+import {revalidate} from "server/lib/util/revalidate"
 import {procedure} from "server/trpc/procedure/server"
 
 import {RemoveOutput} from "server/trpc/type/output/RemoveOutput"
@@ -28,6 +29,13 @@ export const remove = procedure
     }
 
     await orm.em.flush()
+
+    revalidate("/")
+
+    // Revalidate note's route for soft remove, because it's actually just an update
+    if (soft) {
+      revalidate(`/view/${note.id}`)
+    }
 
     return {id, soft}
   })

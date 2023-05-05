@@ -1,6 +1,7 @@
 import {TRPCError} from "@trpc/server"
 import {wrap} from "@mikro-orm/core"
 
+import {revalidate} from "server/lib/util/revalidate"
 import {procedure} from "server/trpc/procedure/server"
 
 import {NoteUpdateInput} from "server/trpc/type/input/NoteUpdateInput"
@@ -22,6 +23,9 @@ export const update = procedure
     wrap(note).assign(fields)
 
     await orm.em.flush()
+
+    revalidate("/")
+    revalidate(`/view/${note.id}`)
 
     return note
   })
