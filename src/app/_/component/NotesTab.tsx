@@ -17,13 +17,18 @@ interface Props {
   name: ValueOf<typeof NoteStatusFilterNames>
   status: NoteStatusFilter
   active: boolean
+  className?: string
 }
 
-export const NoteTab: FC<Props> = ({active, name, status}) => {
+export const NoteTab: FC<Props> = ({active, name, status, className}) => {
   const search = useSearchParams()
   const pathname = usePathname()
 
   const link = useMemo<string>(() => {
+    if (status === NoteStatusFilter.ALL) {
+      return "/"
+    }
+
     const result = new URLSearchParams(search ? search.toString() : [])
 
     if (status) {
@@ -39,7 +44,7 @@ export const NoteTab: FC<Props> = ({active, name, status}) => {
   }, [status, search, pathname])
 
   return (
-    <Link replace href={link} className={cn("px-2 py-4 first:pl-4 last:pr-4 block", {underline: active, "no-underline": !active})}>
+    <Link replace href={link} className={cn("px-2 py-4 first:pl-4 last:pr-4 block", {underline: active, "no-underline": !active}, className)}>
       {name}
     </Link>
   )
