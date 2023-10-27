@@ -1,4 +1,3 @@
-import {revalidate} from "server/lib/util/revalidate"
 import {procedure} from "server/trpc/procedure/server"
 
 import {NoteCreateInput} from "server/trpc/type/input/NoteCreateInput"
@@ -15,8 +14,6 @@ export const create = procedure
     const note = orm.em.create(Note, input)
 
     await orm.em.persistAndFlush(note)
-
-    revalidate("/")
 
     return note
   })

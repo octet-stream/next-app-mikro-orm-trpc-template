@@ -24,7 +24,6 @@ export const update = procedure
 
     await orm.em.flush()
 
-    revalidate("/")
     revalidate(`/view/${note.id}`)
 
     return note

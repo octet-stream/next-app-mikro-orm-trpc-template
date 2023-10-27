@@ -30,8 +30,6 @@ export const remove = procedure
 
     await orm.em.flush()
 
-    revalidate("/")
-
     // Revalidate note's route for soft remove, because it's actually just an update
     if (soft) {
       revalidate(`/view/${note.id}`)

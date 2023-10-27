@@ -12,9 +12,6 @@ import {getNote} from "./_/loader/getNote"
 
 import {NoteView} from "./_/component/NoteView"
 
-// Revalidate page every 1 second, because dynamic segments are broken when the page is static. This value still will return old data on first render. This will likely be fixes in a future.
-export const revalidate = 1
-
 interface Params {
   id: string
 }
