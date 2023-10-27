@@ -1,4 +1,3 @@
-import {notFound} from "next/navigation"
 import type {Metadata} from "next"
 
 import {Note} from "server/db/entity"
@@ -39,7 +38,6 @@ function getEmojiForStatus(status: NoteStatus): string {
   }
 }
 
-// TODO: Reuse getNote query here when I add cache
 export const generateStaticParams = patchStaticParams<Params>(async () => {
   const orm = await getORM()
 
@@ -52,17 +50,8 @@ export const generateStaticParams = patchStaticParams<Params>(async () => {
   return notes.map(({id}) => ({id}))
 })
 
-// TODO: Optimise this, maybe with cache on tRPC level
-// TODO: Reuse getNote query here when I add cache
 export async function generateMetadata({params}: Props): Promise<Metadata> {
-  const orm = await getORM()
-
-  const {title, status} = await orm.em.findOneOrFail(Note, params.id, {
-    disableIdentityMap: true,
-    failHandler: notFound,
-    filters: false,
-    fields: ["title", "status"]
-  })
+  const {title, status} = await getNote(params.id)
 
   return {
     title,
