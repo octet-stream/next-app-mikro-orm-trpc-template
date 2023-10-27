@@ -56,3 +56,12 @@ During my attempts to integrate MikroORM with Next.js I had to fall into several
     status: NoteStatus = NoteStatus.INCOMPLETED
   }
   ```
+
+  * Since recently (at least from v14 or v13.5) Next.js minifies class names by default, which breaks MikroORM's ability to get table names from class names. To fix that, use `tableName` option of `Entity` decorator
+
+  ```ts
+  @Entity({tableName: "note"})
+  class Note {
+    // entity definition...
+  }
+  ```

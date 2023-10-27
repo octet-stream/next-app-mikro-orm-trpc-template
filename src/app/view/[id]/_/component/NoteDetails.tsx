@@ -24,7 +24,7 @@ const parser = unified()
     createElement,
     Fragment,
     components: {
-      a: Anchor as any // IDW why it does not like props
+      a: Anchor as any // idk why it does not like props
     }
   })
 
@@ -32,7 +32,7 @@ export const NoteDetails: FC = () => {
   const {details} = useNoteStateSnapshot()
 
   const parsedDetails = useMemo(
-    () => details ? parser.processSync(details).result : undefined,
+    () => details ? parser.processSync(details).value : undefined,
 
     [details]
   )

@@ -26,7 +26,7 @@ import {Completion} from "./Completion"
 
 const statuses = Object.values(NoteStatus).filter(isString)
 
-@Entity()
+@Entity({tableName: "note"}) // Had to use this option, because Next.js (or more precisely - SWC) minifies classnames
 @Filter<Note>({
   name: NoteStatusFilter.ALL,
   cond: {status: {$ne: NoteStatus.REJECTED}},
