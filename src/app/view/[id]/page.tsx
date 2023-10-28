@@ -41,7 +41,8 @@ export const generateStaticParams = patchStaticParams<Params>(async () => {
   const notes = await orm.em.find(Note, {}, {
     disableIdentityMap: true,
     filters: false,
-    fields: ["id"]
+    fields: ["id"],
+    limit: 1000
   })
 
   return notes.map(({id}) => ({id}))
